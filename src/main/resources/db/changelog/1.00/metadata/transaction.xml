@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    
+    <changeSet id="1" author="deividWesley">
+        <comment>Criacao da tabela TRANSACTION</comment>
+
+        <createTable schemaName="api" tableName="transaction">
+           <column autoIncrement="true" type="BIGINT" name="id">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="operation_type" type="tinyint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="amount" type="decimal(15, 2)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="event_date" type="datetime">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="transaction"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="deividWesley" runInTransaction="true">
+        <comment>Criacao da chave estrangeira FK_ACCOUNT_ID</comment>
+        <addForeignKeyConstraint constraintName="fk_account_id"
+                                 referencedTableName="account" referencedColumnNames="id" referencedTableSchemaName="api"
+                                 baseTableName="transaction" baseColumnNames="account_id" baseTableSchemaName="api" />
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="transaction" constraintName="fk_account_id" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
